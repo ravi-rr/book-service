@@ -2,6 +2,9 @@ package com.rr.bookservice.web.controller;
 
 import com.rr.bookservice.web.model.BookDto;
 import com.rr.bookservice.web.service.BookService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Validated
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/book")
 @RestController
 public class BookController {
 
     private final BookService bookService;
-
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
 
     @GetMapping("/{bookId}")
     public ResponseEntity<BookDto> getBook(@NotNull @PathVariable("bookId")UUID bookId) {
@@ -33,9 +34,11 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity handlePost(@Valid @RequestBody BookDto bookDto) {
-        BookDto savedDto = bookService.saveNewBook(bookDto);
 
-        HttpHeaders headers = new HttpHeaders();
+        log.debug("in handle post..");
+        val savedDto = bookService.saveNewBook(bookDto);
+
+        val headers = new HttpHeaders();
         headers.add("Location", "api/v1/book/" + savedDto.getId());
 
         return new ResponseEntity(headers, HttpStatus.CREATED);
