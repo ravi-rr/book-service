@@ -5,14 +5,17 @@ import com.rr.bookservice.web.service.BookService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Validated
 @RequestMapping("/api/v1/book")
 @RestController
 public class BookController {
@@ -24,7 +27,7 @@ public class BookController {
     }
 
     @GetMapping("/{bookId}")
-    public ResponseEntity<BookDto> getBook(@PathVariable("bookId")UUID bookId) {
+    public ResponseEntity<BookDto> getBook(@NotNull @PathVariable("bookId")UUID bookId) {
         return new ResponseEntity<>(bookService.getBookById(bookId), HttpStatus.OK);
     }
 
