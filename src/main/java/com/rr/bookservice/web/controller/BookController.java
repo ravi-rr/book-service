@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/api/v1/book")
@@ -41,15 +44,25 @@ public class BookController {
         return new ResponseEntity(HttpStatus.NO_CONTENT); // this is 204.. preferred response for PUT
     }
 
+    /**
+     * @ResponseStatus - alternative way of sending response status;
+     * Could've used ResponseEntity as well; Makes sense when we have additional data to send in response.
+     */
     @DeleteMapping("/{bookId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBook(@PathVariable("bookId") UUID bookId) {
         bookService.deleteById(bookId);
     }
 
-    /**
-     * @ResponseStatus - alternative way of sending response status;
-     * Could've used ResponseEntity as well; Makes sense when we have additional data to send in response.
-     */
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<List> validationErrorHandler(ConstraintViolationException e) {
+        List<String> errors = new ArrayList<>(e.getConstraintViolations().size());
+
+        e.getConstraintViolations().forEach(constraintViolation -> {
+            errors.add(constraintViolation.getPropertyPath() + " : " + constraintViolation.getMessage());
+        });
+
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
 }
