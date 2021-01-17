@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RequestMapping("/api/v1/book")
@@ -25,7 +26,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity handlePost(@RequestBody BookDto bookDto) {
+    public ResponseEntity handlePost(@Valid @RequestBody BookDto bookDto) {
         BookDto savedDto = bookService.saveNewBook(bookDto);
 
         HttpHeaders headers = new HttpHeaders();
@@ -35,7 +36,7 @@ public class BookController {
     }
 
     @PutMapping("/{bookId}")
-    public ResponseEntity handlePut(@PathVariable("bookId") UUID bookId, @RequestBody BookDto bookDto) {
+    public ResponseEntity handlePut(@PathVariable("bookId") UUID bookId, @Valid @RequestBody BookDto bookDto) {
         bookService.updateBook(bookId, bookDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT); // this is 204.. preferred response for PUT
     }
