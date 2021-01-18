@@ -4,7 +4,7 @@ import com.rr.bookservice.domain.Book;
 import com.rr.bookservice.web.model.BookDto;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(uses = {DateMapper.class})
 public interface BookMapper {
 
     BookDto bookToBookDto(Book book);

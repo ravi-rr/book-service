@@ -39,4 +39,6 @@ public class Book {
 
     @Column(unique = true)
     private Long isbn;
+
+    private Timestamp forDateMapper;
 }
