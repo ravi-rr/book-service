@@ -41,4 +41,6 @@ public class Book {
     private Long isbn;
 
     private Timestamp forDateMapper;
+
+    private Integer minOnHand;
 }
