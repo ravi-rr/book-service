@@ -30,4 +30,6 @@ public class BookDto {
     private Long isbn;
 
     private OffsetDateTime forDateMapper;
+
+    private Integer quantityOnHand;
 }

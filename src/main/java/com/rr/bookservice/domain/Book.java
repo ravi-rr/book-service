@@ -43,4 +43,6 @@ public class Book {
     private Timestamp forDateMapper;
 
     private Integer minOnHand;
+
+    private Integer desiredQuantity;
 }
