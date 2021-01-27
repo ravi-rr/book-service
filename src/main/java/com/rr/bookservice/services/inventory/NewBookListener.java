@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class NewBookListener {
     private final BookRepository bookRepository;
     private final JmsTemplate jmsTemplate;
 
+    @Transactional
     @JmsListener(destination = JmsConfig.BOOK_REQUEST_QUEUE)
     public void listen(NewBookEvent event) {
         BookDto bookDto = event.getBookDto();
